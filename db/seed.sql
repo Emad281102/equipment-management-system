@@ -1,0 +1,35 @@
+-- =====================================
+-- Initial Equipment Types
+-- =====================================
+
+INSERT INTO equipment_type(name) VALUES
+('Compounding Vessel'),
+('Filtration Vessel'),
+('Vial Washing Machine'),
+('Glassware Washing Machine'),
+('Filter Cleaning Machine'),
+('Vial Sterilization Tunnel'),
+('Aggregation Machine'),
+('Track and Trace System'),
+('Pen Labelling Machine'),
+('Visual Inspection Table'),
+('Temperature Control Unit'),
+('Weighing Balance'),
+('Floor Scale'),
+('Vernier Caliper'),
+('Dynamic Pass Box'),
+('Static Pass Box'),
+('Glove Integrity Tester'),
+('Heating Tank'),
+('Fogger'),
+('Magnetic Stirrer'),
+('Peristaltic Pump'),
+('Vertical LAF'),
+('Cooling Cabinet'),
+('Bag Sealing Machine'),
+('Autoclave'),
+('Lyophilizer'),
+('Particle Counting System'),
+('Dry Heat Sterilizer'),
+('Mobile Clean Station'),
+('Ceiling Suspended LAF');
