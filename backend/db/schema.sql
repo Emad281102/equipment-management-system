@@ -1,4 +1,4 @@
-CREATE TABLE equipment_types (
+CREATE TABLE equipment_type (
                                  id SERIAL PRIMARY KEY,
                                  name VARCHAR(100) NOT NULL UNIQUE
 );

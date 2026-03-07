@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS equipment (
 );
 
 -- Maintenance Log Table
-CREATE TABLE IF NOT EXISTS maintenance_log (
+CREATE TABLE IF NOT EXISTS maintenance_logs (
     id SERIAL PRIMARY KEY,
     maintenance_date DATE NOT NULL,
     notes TEXT,

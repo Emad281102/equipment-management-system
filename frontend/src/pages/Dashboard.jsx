@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import EquipmentTable from "../components/EquipmentTable";
 import EquipmentForm from "../components/EquipmentForm";
+
 import MaintenanceModal from "../components/MaintenanceModal";
 import MaintenanceHistoryModal from "../components/MaintenanceHistoryModal";
 
@@ -24,7 +25,6 @@ const Dashboard = () => {
   const [mode, setMode] = useState("add");
 
   const [maintenanceEquipment, setMaintenanceEquipment] = useState(null);
-
   const [historyLogs, setHistoryLogs] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -45,11 +45,11 @@ const Dashboard = () => {
     } catch (err) {
 
       console.error(err);
+      alert("Failed to load equipment");
 
     }
 
     setLoading(false);
-
   };
 
   const handleAddClick = () => {
@@ -72,38 +72,47 @@ const Dashboard = () => {
 
     if (!window.confirm("Delete this equipment?")) return;
 
-    await deleteEquipment(id);
+    try {
 
-    fetchEquipment();
+      await deleteEquipment(id);
+      fetchEquipment();
+
+    } catch (err) {
+
+      alert("Unable to delete equipment");
+
+    }
 
   };
 
   const handleFormSubmit = async (data) => {
 
-    if (mode === "add") {
+    try {
 
-      await addEquipment(data);
+      if (mode === "add") {
 
-    } else {
+        await addEquipment(data);
 
-      await updateEquipment(selectedEquipment.id, data);
+      } else {
+
+        await updateEquipment(selectedEquipment.id, data);
+
+      }
+
+      setShowForm(false);
+
+      fetchEquipment();
+
+    } catch (err) {
+
+      alert(err.message);
 
     }
 
-    setShowForm(false);
-
-    fetchEquipment();
-
   };
 
-  /* -------------------------
-     MAINTENANCE FUNCTIONS
-  ------------------------- */
-
   const handleMaintenance = (equipment) => {
-
     setMaintenanceEquipment(equipment);
-
   };
 
   const handleMaintenanceSubmit = async (data) => {
@@ -126,28 +135,61 @@ const Dashboard = () => {
 
   };
 
+  const total = equipment.length;
+  const active = equipment.filter(e => e.status === "Active").length;
+  const inactive = equipment.filter(e => e.status === "Inactive").length;
+
   return (
 
     <div className="max-w-6xl mx-auto p-8">
 
-      <div className="flex justify-between items-center mb-6">
+      {/* Header */}
 
-        <h1 className="text-3xl font-bold">
+      <div className="bg-blue-50 border rounded-lg p-6 mb-6 flex justify-between items-center">
 
-          Equipment Management
+        <div>
 
-        </h1>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Equipment Usage Log
+          </h1>
+
+          <p className="text-gray-600 mt-1">
+            Monitor equipment status and track maintenance history
+          </p>
+
+        </div>
 
         <button
           onClick={handleAddClick}
-          className="px-4 py-2 bg-blue-600 text-white rounded"
+          className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
         >
-
-          Add Equipment
-
+          + Add Equipment
         </button>
 
       </div>
+
+      {/* Stats Cards */}
+
+      <div className="grid grid-cols-3 gap-4 mb-6">
+
+        <div className="bg-white shadow rounded-lg p-4 text-center">
+          <p className="text-gray-500 text-sm">Total Equipment</p>
+          <p className="text-2xl font-bold">{total}</p>
+        </div>
+
+        <div className="bg-white shadow rounded-lg p-4 text-center">
+          <p className="text-gray-500 text-sm">Active</p>
+          <p className="text-2xl font-bold text-green-600">{active}</p>
+        </div>
+
+        <div className="bg-white shadow rounded-lg p-4 text-center">
+          <p className="text-gray-500 text-sm">Inactive</p>
+          <p className="text-2xl font-bold text-red-600">{inactive}</p>
+        </div>
+
+      </div>
+
+      {/* Equipment Table */}
 
       <EquipmentTable
         equipment={equipment}
@@ -157,6 +199,8 @@ const Dashboard = () => {
         onMaintenance={handleMaintenance}
         onViewMaintenance={handleViewMaintenance}
       />
+
+      {/* Equipment Form */}
 
       <EquipmentForm
         isOpen={showForm}
@@ -178,7 +222,7 @@ const Dashboard = () => {
 
       )}
 
-      {/* Maintenance History Modal */}
+      {/* Maintenance History */}
 
       {showHistory && (
 

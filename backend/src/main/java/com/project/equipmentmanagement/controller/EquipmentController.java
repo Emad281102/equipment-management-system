@@ -17,25 +17,31 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
+    // GET ALL EQUIPMENT
     @GetMapping
-    public List<Equipment> getAllEquipment(){
+    public List<Equipment> getAllEquipment() {
         return equipmentService.getAllEquipment();
     }
 
+    // ADD EQUIPMENT
     @PostMapping
-    public Equipment addEquipment(@RequestBody Equipment equipment){
+    public Equipment addEquipment(@RequestBody Equipment equipment) {
         return equipmentService.addEquipment(equipment);
     }
 
+    // UPDATE EQUIPMENT
     @PutMapping("/{id}")
     public Equipment updateEquipment(
             @PathVariable Long id,
-            @RequestBody Equipment equipment){
+            @RequestBody Equipment equipment) {
+
         return equipmentService.updateEquipment(id, equipment);
     }
 
+    // DELETE EQUIPMENT
     @DeleteMapping("/{id}")
-    public void deleteEquipment(@PathVariable Long id){
+    public void deleteEquipment(@PathVariable Long id) {
         equipmentService.deleteEquipment(id);
     }
+
 }
